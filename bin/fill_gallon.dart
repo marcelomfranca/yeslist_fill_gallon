@@ -1,5 +1,5 @@
-import 'package:yeslist_fill_gallon/fill_gallon.dart' as fill_gallon;
+import 'package:yeslist_fill_gallon/fill_gallon.dart';
 
 void main(List<String> arguments) {
-  print('Hello world!');
+  var bottlesToFill = <Bottle>[Bottle(1), Bottle(3), Bottle(4.5), Bottle(1.5)];
 }

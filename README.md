@@ -17,4 +17,6 @@ Use as few bottles as possible;
 
   Example 1: 7L gallon, between 5 bottles: [1L, 3L, 4.5L, 1.5L, 3.5L] answer: [1L, 4.5L, 1.5L], left over 0L;
   
-  Example 1: 5L gallon, between 4 bottles: [1L, 3L, 4.5L, 1.5L] answer: [1L, 4.5L]; left over 0.5L;
+  Example 2: 5L gallon, between 4 bottles: [1L, 3L, 4.5L, 1.5L] answer: [1L, 4.5L]; left over 0.5L;
+
+The challenge should allow the user to inform the bottles and the amount of water in the gallon, and then respond with the following result: Bottles used, their volumes and the surplus if any!
