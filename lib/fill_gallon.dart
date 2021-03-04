@@ -3,6 +3,8 @@
 /// More dartdocs go here.
 library yeslist_fill_gallon;
 
-export 'src/yeslist_fill_gallon_base.dart';
+export 'src/gallon.dart';
+export 'src/bottle.dart';
+export 'src/recipient.dart';
 
 // TODO: Export any libraries intended for clients of this package.
