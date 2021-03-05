@@ -114,26 +114,26 @@ class Gallon implements IRecipient {
     if (optimalFillOptions.isEmpty) return;
 
     optimalOption ??= 0;
-    isEmpty = false;
 
     fillOptions[optimalFillOptions[optimalOption]].forEach((el) {
       var sum;
       sum = _filled + fillSource[el].filled;
 
       if (sum > capacity) {
-        fillSource[el].deflate(fillSource[el].filled - (sum - capacity));
+        fillSource[el].empty(fillSource[el].filled - (sum - capacity));
         _filled = capacity;
       } else {
-        fillSource[el].deflate();
+        fillSource[el].empty();
         _filled = sum;
       }
     });
 
+    isEmpty = (filled == 0.0);
     isFullFilled = (capacity == filled);
   }
 
   @override
-  void deflate([double value]) {}
+  void empty([double value]) {}
 
   @override
   void draw() {}
