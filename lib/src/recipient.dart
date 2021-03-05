@@ -7,5 +7,6 @@ abstract class IRecipient {
   double get filled;
 
   void fill() {}
+  void deflate([double deflate]) {}
   void draw() {}
 }

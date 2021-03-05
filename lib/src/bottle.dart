@@ -30,5 +30,22 @@ class Bottle implements IRecipient {
   void fill() {}
 
   @override
+  void deflate([double value]) {
+    value ??= filled;
+
+    _filled = (value > filled) ? 0.0 : filled - value;
+
+    if (filled == 0) {
+      isEmpty = true;
+      isFullFilled = false;
+    }
+
+    if (value > filled) {
+      throw Exception(
+          "The value to deflate is higher than possible ! Esvaziando...");
+    }
+  }
+
+  @override
   void draw() {}
 }

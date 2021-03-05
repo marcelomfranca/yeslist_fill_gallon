@@ -6,8 +6,8 @@ class Gallon implements IRecipient {
   Gallon(this.capacity, {this.fillSource});
 
   List<double> restSumList = [];
-  List<List<double>> fillOptions = [];
-  List<List<double>> optimalFillOptions = [];
+  List<List<int>> fillOptions = [];
+  List<int> optimalFillOptions = [];
 
   @override
   double capacity;
@@ -25,46 +25,48 @@ class Gallon implements IRecipient {
 
   void startFillAnalysis([int k, List<bool> t]) {
     if (fillSource == null || fillSource.isEmpty) {
-      throw Exception('No bottle(s) to fill !');
+      throw ArgumentError('No bottle(s) to fill !');
     }
 
     restSumList = <double>[];
-    fillOptions = <List<double>>[];
+    fillOptions = <List<int>>[];
+    optimalFillOptions = <int>[];
     k ??= 0;
     _filled ??= 0.0;
-    t ??= List<bool>(fillSource.length);
+    t ??= List.filled(fillSource.length, null);
 
     _fillAnalysis(k, t);
   }
 
   void _fillAnalysis(int k, List<bool> t) {
     if (fillSource == null || fillSource.isEmpty) {
-      throw Exception('No bottle(s) to fill !');
+      throw ArgumentError('No bottle(s) to fill !');
     }
 
     restSumList ??= <double>[];
-    fillOptions ??= <List<double>>[];
+    fillOptions ??= <List<int>>[];
 
     var n = fillSource.length;
 
     if (k == n) {
-      var subset = <double>[];
+      var subset = <int>[];
       var sum = 0.0;
 
       for (var i = 0; i < n; i++) {
         if (t[i] == true) {
-          if (fillSource[i].capacity.isNegative) {
+          if (fillSource[i].capacity.isNegative ||
+              fillSource[i].filled.isNegative) {
             throw FormatException(
                 'It\'s not possible exist a bottle with negative volume !');
           }
-          subset.add(fillSource[i].capacity);
-          sum += fillSource[i].capacity;
+          subset.add(i);
+          sum += fillSource[i].filled;
         }
       }
 
-      if (sum >= capacity) {
+      if (sum >= (capacity - filled)) {
         fillOptions.add(subset);
-        restSumList.add((sum - capacity));
+        restSumList.add((sum - (capacity - filled)));
       }
     } else {
       t[k] = true;
@@ -78,8 +80,10 @@ class Gallon implements IRecipient {
 
   void whereIsOptimal([double optimal, int startIndex]) {
     if (fillOptions == null || restSumList == null) {
-      throw ArgumentError('Run fill analysis first !');
+      throw Exception('Run fill analysis first !');
     }
+
+    optimalFillOptions ??= <int>[];
 
     startIndex ??= 0;
     optimal ??= restSumList.reduce(min);
@@ -96,38 +100,40 @@ class Gallon implements IRecipient {
       sl = fillOptions[i].length;
 
       if ((osl < 0) || sl < osl) {
-        optimalFillOptions = [fillOptions[i]];
+        optimalFillOptions = [i];
         osl = sl;
       } else if (sl == osl) {
-        optimalFillOptions.add(fillOptions[i]);
+        optimalFillOptions.add(i);
       }
     } while (i < restSumList.length);
   }
 
+  // TODO refill choose optimal from fillOptions
   @override
   void fill([int optimalOption]) {
     if (optimalFillOptions.isEmpty) return;
 
     optimalOption ??= 0;
-    var i = 0;
-
     isEmpty = false;
 
-    _filled = optimalFillOptions[optimalOption].fold(0, (prev, element) {
-      var sum = prev + element;
+    fillOptions[optimalFillOptions[optimalOption]].forEach((el) {
+      var sum;
+      sum = _filled + fillSource[el].filled;
 
       if (sum > capacity) {
-        optimalFillOptions[optimalOption][i] = sum - capacity;
-        isFullFilled = true;
-        return capacity;
+        fillSource[el].deflate(fillSource[el].filled - (sum - capacity));
+        _filled = capacity;
+      } else {
+        fillSource[el].deflate();
+        _filled = sum;
       }
-
-      optimalFillOptions[optimalOption][i] = 0.0;
-      i++;
-
-      return sum;
     });
+
+    isFullFilled = (capacity == filled);
   }
+
+  @override
+  void deflate([double value]) {}
 
   @override
   void draw() {}
