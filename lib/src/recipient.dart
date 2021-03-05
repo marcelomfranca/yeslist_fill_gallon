@@ -9,4 +9,5 @@ abstract class IRecipient {
   void fill() {}
   void empty([double value]) {}
   void draw() {}
+  Map<String, dynamic> toJson() {}
 }

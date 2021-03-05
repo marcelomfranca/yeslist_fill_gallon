@@ -3,7 +3,10 @@ import 'dart:math';
 import 'recipient.dart';
 
 class Gallon implements IRecipient {
-  Gallon(this.capacity, {this.fillSource});
+  Gallon(this.capacity,
+      {this.fillSource, this.label, this.liquidColor = 'cyan'}) {
+    label ??= capacity.toString() + 'l';
+  }
 
   List<double> restSumList = [];
   List<List<int>> fillOptions = [];
@@ -19,6 +22,9 @@ class Gallon implements IRecipient {
   double _filled = 0.0;
   @override
   double get filled => _filled;
+
+  String liquidColor;
+  String label;
 
   @override
   var fillSource;
@@ -137,4 +143,14 @@ class Gallon implements IRecipient {
 
   @override
   void draw() {}
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'capacity': capacity,
+        'filled': filled,
+        'isEmpty': isEmpty,
+        'isFullFilled': isFullFilled,
+        'liquidColor': liquidColor,
+        'label': label
+      };
 }

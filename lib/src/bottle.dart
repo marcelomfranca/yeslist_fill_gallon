@@ -1,7 +1,8 @@
 import 'recipient.dart';
 
 class Bottle implements IRecipient {
-  Bottle(this.capacity, {this.liquidColor, this.label, bool autoFill = true}) {
+  Bottle(this.capacity,
+      {this.liquidColor = 'cyan', this.label, bool autoFill = true}) {
     label ??= capacity.toString() + 'l';
     if (autoFill) {
       _filled = capacity;
@@ -23,8 +24,8 @@ class Bottle implements IRecipient {
   @override
   double get filled => _filled;
 
-  String liquidColor = 'cyan';
-  String label = '';
+  String liquidColor;
+  String label;
 
   @override
   void fill() {}
@@ -33,17 +34,26 @@ class Bottle implements IRecipient {
   void empty([double value]) {
     value ??= filled;
 
-    _filled = (value > filled) ? 0.0 : filled - value;
+    if (value > capacity || value > filled)
+      return print(
+          "The value to empty is higher than possible ! Esvaziando...");
+
+    _filled = filled - value;
 
     isEmpty = (filled == 0.0);
     isFullFilled = (capacity == filled);
-
-    if (value > filled) {
-      throw Exception(
-          "The value to deflate is higher than possible ! Esvaziando...");
-    }
   }
 
   @override
   void draw() {}
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'capacity': capacity,
+        'filled': filled,
+        'isEmpty': isEmpty,
+        'isFullFilled': isFullFilled,
+        'liquidColor': liquidColor,
+        'label': label
+      };
 }
