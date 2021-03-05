@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'recipient.dart';
 
 class Gallon implements IRecipient {
@@ -30,7 +32,6 @@ class Gallon implements IRecipient {
     fillOptions = <List<double>>[];
     k ??= 0;
     _filled ??= 0.0;
-
     t ??= List<bool>(fillSource.length);
 
     _fillAnalysis(k, t);
@@ -60,6 +61,11 @@ class Gallon implements IRecipient {
           sum += fillSource[i].capacity;
         }
       }
+
+      if (sum >= capacity) {
+        fillOptions.add(subset);
+        restSumList.add((sum - capacity));
+      }
     } else {
       t[k] = true;
 
@@ -70,13 +76,57 @@ class Gallon implements IRecipient {
     }
   }
 
-  void whereIsOptimal([double optimal, int startIndex]) {}
-
-  @override
-  void fill([int optimalOption]) {
+  void whereIsOptimal([double optimal, int startIndex]) {
     if (fillOptions == null || restSumList == null) {
       throw ArgumentError('Run fill analysis first !');
     }
+
+    startIndex ??= 0;
+    optimal ??= restSumList.reduce(min);
+    var i = -1, sl = -1, osl = -1;
+
+    do {
+      i = restSumList.indexWhere((n) {
+        return n == optimal;
+      }, startIndex);
+
+      if (i < 0) break;
+
+      startIndex = i + 1;
+      sl = fillOptions[i].length;
+
+      if ((osl < 0) || sl < osl) {
+        optimalFillOptions = [fillOptions[i]];
+        osl = sl;
+      } else if (sl == osl) {
+        optimalFillOptions.add(fillOptions[i]);
+      }
+    } while (i < restSumList.length);
+  }
+
+  @override
+  void fill([int optimalOption]) {
+    if (optimalFillOptions.isEmpty) return;
+
+    optimalOption ??= 0;
+    var i = 0;
+
+    isEmpty = false;
+
+    _filled = optimalFillOptions[optimalOption].fold(0, (prev, element) {
+      var sum = prev + element;
+
+      if (sum > capacity) {
+        optimalFillOptions[optimalOption][i] = sum - capacity;
+        isFullFilled = true;
+        return capacity;
+      }
+
+      optimalFillOptions[optimalOption][i] = 0.0;
+      i++;
+
+      return sum;
+    });
   }
 
   @override
