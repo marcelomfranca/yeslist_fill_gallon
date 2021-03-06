@@ -22,26 +22,26 @@ class Bottle implements IRecipient {
 
   double _filled = 0.0;
   @override
-  double get filled => _filled;
+  double get volume => _filled;
 
   String liquidColor;
   String label;
 
   @override
-  void fill() {}
+  void fill(int set) {}
 
   @override
   void empty([double value]) {
-    value ??= filled;
+    value ??= volume;
 
-    if (value > capacity || value > filled)
+    if (value > capacity || value > volume)
       return print(
           "The value to empty is higher than possible ! Esvaziando...");
 
-    _filled = filled - value;
+    _filled = volume - value;
 
-    isEmpty = (filled == 0.0);
-    isFullFilled = (capacity == filled);
+    isEmpty = (volume == 0.0);
+    isFullFilled = (capacity == volume);
   }
 
   @override
@@ -50,9 +50,9 @@ class Bottle implements IRecipient {
   @override
   Map<String, dynamic> toJson() => {
         'capacity': capacity,
-        'filled': filled,
-        'isEmpty': isEmpty,
+        'filled': volume,
         'isFullFilled': isFullFilled,
+        'isEmpty': isEmpty,
         'liquidColor': liquidColor,
         'label': label
       };

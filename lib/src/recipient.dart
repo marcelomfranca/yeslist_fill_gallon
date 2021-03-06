@@ -4,9 +4,9 @@ abstract class IRecipient {
   bool isFullFilled;
   var fillSource;
 
-  double get filled;
+  double get volume;
 
-  void fill() {}
+  void fill(int set) {}
   void empty([double value]) {}
   void draw() {}
   Map<String, dynamic> toJson() {}

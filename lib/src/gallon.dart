@@ -21,7 +21,7 @@ class Gallon implements IRecipient {
 
   double _filled = 0.0;
   @override
-  double get filled => _filled;
+  double get volume => _filled;
 
   String liquidColor;
   String label;
@@ -61,18 +61,18 @@ class Gallon implements IRecipient {
       for (var i = 0; i < n; i++) {
         if (t[i] == true) {
           if (fillSource[i].capacity.isNegative ||
-              fillSource[i].filled.isNegative) {
+              fillSource[i].volume.isNegative) {
             throw FormatException(
                 'It\'s not possible exist a bottle with negative volume !');
           }
           subset.add(i);
-          sum += fillSource[i].filled;
+          sum += fillSource[i].volume;
         }
       }
 
-      if (sum >= (capacity - filled)) {
+      if (sum >= (capacity - volume)) {
         fillOptions.add(subset);
-        restSumList.add((sum - (capacity - filled)));
+        restSumList.add((sum - (capacity - volume)));
       }
     } else {
       t[k] = true;
@@ -114,32 +114,47 @@ class Gallon implements IRecipient {
     } while (i < restSumList.length);
   }
 
-  // TODO refill choose optimal from fillOptions
   @override
-  void fill([int optimalOption]) {
-    if (optimalFillOptions.isEmpty) return;
+  void fill(int set) {
+    if (optimalFillOptions.isEmpty || fillOptions.isEmpty) return;
 
-    optimalOption ??= 0;
+    if (isFullFilled) empty();
+    //  return print('The gallon is full, empty first to refill !');
 
-    fillOptions[optimalFillOptions[optimalOption]].forEach((el) {
-      var sum;
-      sum = _filled + fillSource[el].filled;
+    //var fillOption = (optimal) ? optimalFillOptions[set] : fillOptions[set];
+    var sum;
+
+    fillOptions[set].forEach((el) {
+      sum = _filled + fillSource[el].volume;
 
       if (sum > capacity) {
-        fillSource[el].empty(fillSource[el].filled - (sum - capacity));
+        fillSource[el].empty(fillSource[el].volume - (sum - capacity));
         _filled = capacity;
       } else {
         fillSource[el].empty();
         _filled = sum;
       }
+
+      //print(fillSource[el].toJson());
     });
 
-    isEmpty = (filled == 0.0);
-    isFullFilled = (capacity == filled);
+    isEmpty = (volume == 0.0);
+    isFullFilled = (capacity == volume);
   }
 
   @override
-  void empty([double value]) {}
+  void empty([double value]) {
+    value ??= volume;
+
+    if (value > capacity || value > volume)
+      return print(
+          "The value to empty is higher than possible ! Esvaziando...");
+
+    _filled = volume - value;
+
+    isEmpty = (volume == 0.0);
+    isFullFilled = (capacity == volume);
+  }
 
   @override
   void draw() {}
@@ -147,9 +162,9 @@ class Gallon implements IRecipient {
   @override
   Map<String, dynamic> toJson() => {
         'capacity': capacity,
-        'filled': filled,
-        'isEmpty': isEmpty,
+        'filled': volume,
         'isFullFilled': isFullFilled,
+        'isEmpty': isEmpty,
         'liquidColor': liquidColor,
         'label': label
       };
