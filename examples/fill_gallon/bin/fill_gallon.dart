@@ -11,7 +11,9 @@ Future<void> main(List<String> arguments) async {
 
     print('Example: \n\t fill_gallon \n\t fill_gallon 1 or 2');
   } else if (arguments[0] == '1' || arguments[0] == '2') {
-    example(int.parse(arguments[0]));
+    example(
+        viable: (arguments.length > 1 && arguments[1] == 'true') ? true : false,
+        ex: int.parse(arguments[0]));
   } else {
     print('Invalid argument, see --help option.');
   }

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:yeslist_fill_gallon/yeslist_fill_gallon.dart';
 
-void example([int ex = 2]) {
+void example({bool viable = true, int ex = 2}) {
   var bottlesToFill, gallon, str;
 
   if (ex == 1) {
@@ -66,28 +66,29 @@ void example([int ex = 2]) {
 
   stdout.write('\n\n');
 
-  print('viable cases: ');
+  if (viable) {
+    print('viable cases: ');
 
-  gallon.fillOptions.asMap().forEach((index, value) {
-    var i = index;
+    gallon.fillOptions.asMap().forEach((index, value) {
+      var i = index;
 
-    if (stdout.terminalColumns > 80) {
-      if (i % 3 == 0) {
+      if (stdout.terminalColumns > 80) {
+        if (i % 3 == 0) {
+          stdout.write('\n\t');
+          i += 3;
+        }
+      } else {
         stdout.write('\n\t');
-        i += 3;
       }
-    } else {
-      stdout.write('\n\t');
-    }
 
-    writeFillOption(gallon, bottlesToFill, index);
+      writeFillOption(gallon, bottlesToFill, index);
 
-    if (index < gallon.fillOptions.length - 1) {
-      stdout.write(', ');
-    }
-  });
-
-  stdout.write('\n\n');
+      if (index < gallon.fillOptions.length - 1) {
+        stdout.write(', ');
+      }
+    });
+    stdout.write('\n\n');
+  }
 
   print('executed in ${s.elapsed}');
 
