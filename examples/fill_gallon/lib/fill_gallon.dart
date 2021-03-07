@@ -189,11 +189,16 @@ void centerText(int width, String text, [bool withHr = true]) {
 
   if (withHr) stdout.write(String.fromCharCodes(space));
   if (withHr) stdout.write(String.fromCharCodes(hr));
+
   stdout.writeln();
   stdout.write(String.fromCharCodes(space));
+
   if (withHr) stdout.write('|   ');
+
   stdout.write(tempText);
+
   if (withHr) stdout.write('   |');
+
   if (withHr) stdout.writeln();
   if (withHr) stdout.write(String.fromCharCodes(space));
   if (withHr) stdout.write(String.fromCharCodes(hr));
