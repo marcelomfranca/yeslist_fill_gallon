@@ -24,6 +24,10 @@ void example() {
     ..startFillAnalysis()
     ..whereIsOptimal();
 
+  gallon.optimalFillOptions.forEach((element) {
+    gallon.fill(element);
+  });
+
   stdout.write('\n' + 'Gallon: ');
     print(gallon.toJson());
 
