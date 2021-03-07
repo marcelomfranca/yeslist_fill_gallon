@@ -34,16 +34,7 @@ void example({bool viable = false, int ex = 2}) {
     return;
   }
 
-  centerText(stdout.terminalColumns, 'Yes List Challenge');
-
-  stdout.writeln();
-
-  //centerText(stdout.terminalColumns, str, false);
-  print('\n' + str);
-
-  stdout.writeln();
-
-  gallon = run(gallon, viable: viable);
+  gallon = run(gallon, str: str, viable: viable);
 }
 
 void writeFillOption(Gallon gallon, int i, [bool totalCapacity = true]) {
@@ -60,12 +51,14 @@ void writeFillOption(Gallon gallon, int i, [bool totalCapacity = true]) {
   });
 }
 
-IRecipient run(Gallon gallon, {bool viable = false}) {
+IRecipient run(Gallon gallon, {bool viable = false, String str = ''}) {
   stdout.writeln();
 
   centerText(stdout.terminalColumns, 'Yes List Challenge');
 
   stdout.writeln();
+
+  if (!str.isEmpty) print('\n' + str + '\n');
 
   var s = Stopwatch()..start();
 
