@@ -159,7 +159,7 @@ IRecipient createRecipient(String header, IRecipient recipient,
       if (data > 0) recipient.filled = data;
     }
 
-    recipient.label = recipient.capacity.toString();
+    recipient.label = recipient.capacity.toString() + 'l';
 
     if (autofill) recipient.filled = recipient.capacity;
 
