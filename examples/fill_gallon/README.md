@@ -41,3 +41,18 @@ fill_gallon 2
 ```
 
 see '--help' option
+
+## VSCode launch.json
+
+```
+"configurations": [
+        {
+            "console": "terminal",
+            "name": "fill_gallon",
+            "request": "launch",
+            "type": "dart",
+            "program": "bin/fill_gallon.dart",
+            "args": [""],
+        }
+    ]
+```
