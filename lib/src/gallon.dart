@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'recipient.dart';
@@ -22,8 +23,14 @@ class Gallon implements IRecipient {
   double _filled = 0.0;
   @override
   double get volume => _filled;
+  @override
+  void set filled(value) {
+    _filled = value;
+  }
 
+  @override
   String liquidColor;
+  @override
   String label;
 
   @override
@@ -85,8 +92,12 @@ class Gallon implements IRecipient {
   }
 
   void whereIsOptimal([double optimal, int startIndex]) {
-    if (fillOptions == null || restSumList == null) {
+    if (fillOptions == null || restSumList == null)
       throw Exception('Run fill analysis first !');
+
+    if (fillOptions.isEmpty) {
+      print('\n' + 'Fill options not found by criteria !');
+      exit(0);
     }
 
     optimalFillOptions ??= <int>[];
@@ -147,7 +158,7 @@ class Gallon implements IRecipient {
     value ??= volume;
 
     if (value > capacity || value > volume)
-      return print(
+      throw Exception(
           "The value to empty is higher than possible ! Esvaziando...");
 
     _filled = volume - value;

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:yeslist_fill_gallon/yeslist_fill_gallon.dart';
 
-void example({bool viable = true, int ex = 2}) {
+void example({bool viable = false, int ex = 2}) {
   var bottlesToFill, gallon, str;
 
   if (ex == 1) {
@@ -43,6 +43,30 @@ void example({bool viable = true, int ex = 2}) {
 
   stdout.writeln();
 
+  gallon = run(gallon, viable: viable);
+}
+
+void writeFillOption(Gallon gallon, int i, [bool totalCapacity = true]) {
+  stdout.write('[');
+  gallon.fillOptions[i].asMap().forEach((ix, value) {
+    stdout.write((totalCapacity)
+        ? gallon.fillSource[value].label
+        : gallon.fillSource[value].volume.toString() + 'l');
+    if (ix == gallon.fillOptions[i].length - 1) {
+      stdout.write(']');
+    } else {
+      stdout.write(' ');
+    }
+  });
+}
+
+IRecipient run(Gallon gallon, {bool viable = false}) {
+  stdout.writeln();
+
+  centerText(stdout.terminalColumns, 'Yes List Challenge');
+
+  stdout.writeln();
+
   var s = Stopwatch()..start();
 
   gallon
@@ -57,10 +81,10 @@ void example({bool viable = true, int ex = 2}) {
 
     gallon.fill(element);
 
-    writeFillOption(gallon, bottlesToFill, element);
+    writeFillOption(gallon, element);
     stdout.write(' ');
 
-    writeFillOption(gallon, bottlesToFill, element, false);
+    writeFillOption(gallon, element, false);
     stdout.write(' = ' + gallon.restSumList[element].toString() + 'L');
   });
 
@@ -81,7 +105,7 @@ void example({bool viable = true, int ex = 2}) {
         stdout.write('\n\t');
       }
 
-      writeFillOption(gallon, bottlesToFill, index);
+      writeFillOption(gallon, index);
 
       if (index < gallon.fillOptions.length - 1) {
         stdout.write(', ');
@@ -93,21 +117,63 @@ void example({bool viable = true, int ex = 2}) {
   print('executed in ${s.elapsed}');
 
   s.stop();
+
+  return gallon;
 }
 
-void writeFillOption(Gallon gallon, List<Bottle> bottlesToFill, int i,
-    [bool totalCapacity = true]) {
-  stdout.write('[');
-  gallon.fillOptions[i].asMap().forEach((ix, value) {
-    stdout.write((totalCapacity)
-        ? bottlesToFill[value].label
-        : bottlesToFill[value].volume.toString() + 'l');
-    if (ix == gallon.fillOptions[i].length - 1) {
-      stdout.write(']');
-    } else {
-      stdout.write(' ');
+double doubleInput(String line, double i) {
+  if (line.isEmpty) return i;
+
+  var input = double.tryParse(line);
+
+  if (input != null && input > (i - 1)) {
+    return input;
+  } else {
+    print('>>> Insert a positive number <<<');
+    return -1;
+  }
+}
+
+IRecipient createRecipient(String header, IRecipient recipient,
+    {bool autofill = false}) {
+  var data;
+
+  var input = [
+    ['Insert max capacity [1]: ', 1.0],
+  ];
+
+  if (!autofill) input.add(['Insert filled volume [0]: ', 0.0]);
+
+  var j = 0;
+
+  stdout.write(header);
+
+  do {
+    stdout.write(input[j][0]);
+
+    data = doubleInput(stdin.readLineSync(), input[j][1]);
+
+    if (j > 0 && data > input[j - 1][1]) {
+      print('>>> Filled cannot bigger than max capacity <<<');
+      continue;
     }
-  });
+
+    if (data < 0.0) continue;
+
+    if (j == 0) {
+      recipient.capacity = data;
+    } else if (j == 1) {
+      if (data > 0) recipient.filled = data;
+    }
+
+    recipient.label = recipient.capacity.toString();
+
+    if (autofill) recipient.filled = recipient.capacity;
+
+    j++;
+  } while (j < input.length);
+
+  return recipient;
 }
 
 void centerText(int width, String text, [bool withHr = true]) {

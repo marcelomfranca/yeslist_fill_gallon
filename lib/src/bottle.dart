@@ -23,8 +23,11 @@ class Bottle implements IRecipient {
   double _filled = 0.0;
   @override
   double get volume => _filled;
-
+  @override
+  void set filled(value) => _filled = value;
+  @override
   String liquidColor;
+  @override
   String label;
 
   @override
