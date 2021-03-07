@@ -1,21 +1,41 @@
-# Yes List Challenge
+# Yes List Fill Gallon Library
+
+  This is a dart library created for the Yes List Challenge, see the examples in examples folder.
 
 ## Requirements
 
   To run the source code project please see: https://dart.dev/get-dart
 
-## Run
+## Example
 
-  examples/fill_gallon/bin/fill_gallon.exe 
-  or
-  examples/fill_gallon/bin/fill_gallon
-  for linux
+```
+void example() {
+  var bottlesToFill = <Bottle>[
+     Bottle(1),
+     Bottle(3),
+     Bottle(4.5),
+     Bottle(1.5),
+     Bottle(3.5)
+  ];
 
-  example: fill_gallon 1
-  
-  see '--help' option
+  var gallon = Gallon(7, fillSource: bottlesToFill);
 
-## The Problem
+  gallon
+    ..startFillAnalysis()
+    ..whereIsOptimal();
+
+  stdout.write('\n' + 'Gallon: ');
+    print(gallon.toJson());
+
+  stdout.write('\n' + 'Bottle(s): \n');
+  gallon.fillSource.forEach((element) {
+      stdout.write('\t');
+      print(element.toJson());
+    });
+}
+```
+
+# Yes List Challenge
 
 Filling a gallon of water.
 

@@ -1,5 +1,24 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+A sample command-line application using yeslist_fill_gallon library.
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+## Requirements
+
+  To run the source code project please see: https://dart.dev/get-dart
+
+## Run
+
+    - from source code:
+
+    dart run ./bin/fill_gallon.dart
+
+    - from windows:
+
+    ./bin/fill_gallon.exe 
+
+    - from linux:
+
+    ./bin/fill_gallon
+
+
+    example: fill_gallon 1
+  
+    see '--help' option
