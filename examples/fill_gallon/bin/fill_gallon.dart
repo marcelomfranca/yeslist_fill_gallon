@@ -6,7 +6,7 @@ import 'package:yeslist_fill_gallon/yeslist_fill_gallon.dart';
 import '../lib/fill_gallon.dart';
 
 Future<void> main(List<String> arguments) async {
-  if (arguments.isEmpty) {
+  if ((!arguments.isEmpty && arguments[0] == 'true') || arguments.isEmpty) {
     var gallon = createRecipient(
       'Create a gallon: \n\n',
       Gallon(0),
@@ -34,7 +34,8 @@ Future<void> main(List<String> arguments) async {
 
     gallon.fillSource = bottles;
 
-    gallon = run(gallon);
+    gallon =
+        run(gallon, viable: (!arguments.isEmpty && arguments[0] == 'true'));
 
     stdout.write('\n' + 'Gallon: ');
     print(gallon.toJson());
@@ -51,7 +52,7 @@ Future<void> main(List<String> arguments) async {
     print('\t' + 'fill_gallon [options]' + '\n');
 
     print('Example: \n\t fill_gallon \n\t fill_gallon 1 or 2');
-    print('\n' + 'With viable cases: fill_gallon 1 true');
+    print('\n' + 'With viable cases: fill_gallon true or fill_gallon 1 true');
   } else if (arguments[0] == '1' || arguments[0] == '2') {
     example(
         viable: (arguments.length > 1 && arguments[1] == 'true') ? true : false,

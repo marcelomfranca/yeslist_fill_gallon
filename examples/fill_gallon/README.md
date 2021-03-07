@@ -40,6 +40,12 @@ Example 2: 5L gallon, between 4 bottles: [1L, 3L, 4.5L, 1.5L] answer: [1L, 4.5L]
 fill_gallon 2
 ```
 
+with viable cases:
+
+```
+./bin/fill_gallon 1 true
+```
+
 see '--help' option
 
 ## VSCode launch.json
