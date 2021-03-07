@@ -9,8 +9,8 @@ environment:
 
 dependencies:
   yeslist_fill_gallon:
-    git: https://github.com/marcelomfranca/yeslist_fill_gallon.git
-    #path: ../../
+    #git: https://github.com/marcelomfranca/yeslist_fill_gallon.git
+    path: ../../
 #  path: ^1.7.0
 
 dev_dependencies:
