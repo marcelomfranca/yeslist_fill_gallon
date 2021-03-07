@@ -1,5 +1,21 @@
 # Yes List Challenge
 
+## Requirements
+
+  To run the source code project please see: https://dart.dev/get-dart
+
+## Run
+
+  examples/fill_gallon/bin/fill_gallon.exe 
+  or
+  examples/fill_gallon/bin/fill_gallon
+  for linux
+
+  example: fill_gallon 1
+  
+  see '--help' option
+
+## The Problem
 
 Filling a gallon of water.
 
