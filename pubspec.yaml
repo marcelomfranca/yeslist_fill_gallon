@@ -1,6 +1,6 @@
 name: yeslist_fill_gallon
 description: Yes List Challenge - Filling a gallon of water.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/marcelomfranca/yeslist_fill_gallon
 
 environment:
