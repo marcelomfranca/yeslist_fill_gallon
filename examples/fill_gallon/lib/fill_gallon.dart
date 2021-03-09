@@ -66,6 +66,8 @@ IRecipient run(Gallon gallon, {bool viable = false, String str = ''}) {
     ..startFillAnalysis()
     ..whereIsOptimal();
 
+  if (gallon.fillOptions.isEmpty) return gallon;
+
   stdout.write('optimal case(s): ' + '\n');
 
   gallon.optimalFillOptions.forEach((element) {

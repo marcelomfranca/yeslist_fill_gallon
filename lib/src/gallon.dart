@@ -97,7 +97,7 @@ class Gallon implements IRecipient {
 
     if (fillOptions.isEmpty) {
       print('\n' + 'Fill options not found by criteria !');
-      exit(0);
+      return;
     }
 
     optimalFillOptions ??= <int>[];
